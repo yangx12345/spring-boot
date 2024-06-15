@@ -85,6 +85,7 @@ public class DefaultPropertiesPropertySource extends MapPropertySource {
 			DefaultPropertiesPropertySource propertySource = new DefaultPropertiesPropertySource(resultingSource);
 			if (sources.contains(NAME)) {
 				mergeIfPossible(source, sources, resultingSource);
+				//将列表中的 默认属性源 替换完合并之后的
 				sources.replace(NAME, propertySource);
 			}
 			else {
@@ -94,6 +95,11 @@ public class DefaultPropertiesPropertySource extends MapPropertySource {
 		}
 	}
 
+	/**
+	 * @param source 默认属性
+	 * @param sources 环境属性源列表
+	 * @param resultingSource 最终结果属性
+	 */
 	@SuppressWarnings("unchecked")
 	private static void mergeIfPossible(Map<String, Object> source, MutablePropertySources sources,
 			Map<String, Object> resultingSource) {

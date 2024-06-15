@@ -85,13 +85,17 @@ public final class ConfigurationPropertySources {
 	 */
 	public static void attach(Environment environment) {
 		Assert.isInstanceOf(ConfigurableEnvironment.class, environment);
+		//获取环境中的属性源列表
 		MutablePropertySources sources = ((ConfigurableEnvironment) environment).getPropertySources();
+		//获取附加属性源 //configurationProperties
 		PropertySource<?> attached = getAttached(sources);
 		if (attached == null || !isUsingSources(attached, sources)) {
+			//附加属性源为一个可配置的属性源列表
 			attached = new ConfigurationPropertySourcesPropertySource(ATTACHED_PROPERTY_SOURCE_NAME,
 					new SpringConfigurationPropertySources(sources));
 		}
 		sources.remove(ATTACHED_PROPERTY_SOURCE_NAME);
+		//将属性源放到第一个
 		sources.addFirst(attached);
 	}
 

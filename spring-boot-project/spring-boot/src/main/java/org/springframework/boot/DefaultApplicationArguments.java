@@ -37,6 +37,9 @@ public class DefaultApplicationArguments implements ApplicationArguments {
 
 	private final String[] args;
 
+	/**
+	 * @param args
+	 */
 	public DefaultApplicationArguments(String... args) {
 		Assert.notNull(args, "Args must not be null");
 		this.source = new Source(args);

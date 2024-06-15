@@ -1,6 +1,8 @@
 pluginManagement {
 	repositories {
 		mavenCentral()
+		//加上阿里云镜像
+		maven { url 'https://maven.aliyun.com/repository/public' }
 		gradlePluginPortal()
 	}
 	resolutionStrategy {

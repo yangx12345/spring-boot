@@ -1,3 +1,10 @@
+buildscript {
+	repositories {
+		maven { url 'https://maven.aliyun.com/repository/public' }
+		maven { url "https://repo.spring.io/plugins-release" }
+	}
+}
+
 plugins {
 	id "base"
 	id "org.jetbrains.kotlin.jvm" apply false // https://youtrack.jetbrains.com/issue/KT-30276
@@ -25,13 +32,17 @@ allprojects {
 	group "org.springframework.boot"
 
 	repositories {
+		maven { url "https://maven.aliyun.com/repository/public" }
 		mavenCentral()
 		if (version.contains('-')) {
-			maven { url "https://repo.spring.io/milestone" }
+			maven { url "https://maven.aliyun.com/repository/public" }
 		}
 		if (version.endsWith('-SNAPSHOT')) {
-			maven { url "https://repo.spring.io/snapshot" }
+			maven { url "https://maven.aliyun.com/repository/public" }
 		}
+		maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
+		maven { url "https://maven.aliyun.com/repository/public" }
+		maven { url "https://maven.aliyun.com/nexus/content/repositories/spring-plugin" }
 	}
 
 	configurations.all {

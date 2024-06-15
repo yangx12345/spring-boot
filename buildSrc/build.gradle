@@ -1,13 +1,13 @@
 plugins {
 	id "java-gradle-plugin"
-	id "io.spring.javaformat" version "${javaFormatVersion}"
+//	id "io.spring.javaformat" version "${javaFormatVersion}"
 	id "checkstyle"
 }
 
 repositories {
 	mavenCentral()
 	gradlePluginPortal()
-	maven { url "https://repo.spring.io/release" }
+	maven { url "https://maven.aliyun.com/repository/public" }
 }
 
 sourceCompatibility = 1.8

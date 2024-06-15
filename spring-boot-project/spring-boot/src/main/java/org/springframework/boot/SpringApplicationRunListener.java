@@ -72,7 +72,7 @@ public interface SpringApplicationRunListener {
 	default void contextLoaded(ConfigurableApplicationContext context) {
 	}
 
-	/**
+		/**
 	 * The context has been refreshed and the application has started but
 	 * {@link CommandLineRunner CommandLineRunners} and {@link ApplicationRunner
 	 * ApplicationRunners} have not been called.

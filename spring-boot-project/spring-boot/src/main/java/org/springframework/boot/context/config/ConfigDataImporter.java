@@ -93,6 +93,7 @@ class ConfigDataImporter {
 	private List<ConfigDataResolutionResult> resolve(ConfigDataLocationResolverContext locationResolverContext,
 			Profiles profiles, List<ConfigDataLocation> locations) {
 		List<ConfigDataResolutionResult> resolved = new ArrayList<>(locations.size());
+		//分别为类路径下(jar包内) 和 file（jar包外）
 		for (ConfigDataLocation location : locations) {
 			resolved.addAll(resolve(locationResolverContext, profiles, location));
 		}

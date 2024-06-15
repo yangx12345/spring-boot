@@ -77,7 +77,11 @@ class ConfigDataLoaders {
 					availableParameters.add(BootstrapContext.class, bootstrapContext);
 					availableParameters.add(BootstrapRegistry.class, bootstrapContext);
 				});
+		//ConfigDataLoader  根据给定的ConfigDataResource解析出ConfigData
+		//配置加载器列表 ConfigTreeConfigDataLoader(ConfigTreeConfigDataResource) 和
+		//StandardConfigDataLoader(StandardConfigDataResource)
 		this.loaders = instantiator.instantiate(classLoader, names);
+		//可以解析的ConfigDataResource列表
 		this.resourceTypes = getResourceTypes(this.loaders);
 	}
 

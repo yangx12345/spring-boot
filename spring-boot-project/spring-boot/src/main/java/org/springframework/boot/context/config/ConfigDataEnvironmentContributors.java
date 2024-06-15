@@ -91,6 +91,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 	 */
 	ConfigDataEnvironmentContributors withProcessedImports(ConfigDataImporter importer,
 			ConfigDataActivationContext activationContext) {
+		//导入阶段
 		ImportPhase importPhase = ImportPhase.get(activationContext);
 		this.logger.trace(LogMessage.format("Processing imports for phase %s. %s", importPhase,
 				(activationContext != null) ? activationContext : "no activation context"));
@@ -108,8 +109,10 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 						result.getRoot().withReplacement(contributor, bound));
 				continue;
 			}
+			//配置数据贡献者地址的解析上下文
 			ConfigDataLocationResolverContext locationResolverContext = new ContributorConfigDataLocationResolverContext(
 					result, contributor, activationContext);
+			//配置数据加载上下文
 			ConfigDataLoaderContext loaderContext = new ContributorDataLoaderContext(this);
 			List<ConfigDataLocation> imports = contributor.getImports();
 			this.logger.trace(LogMessage.format("Processing imports %s", imports));

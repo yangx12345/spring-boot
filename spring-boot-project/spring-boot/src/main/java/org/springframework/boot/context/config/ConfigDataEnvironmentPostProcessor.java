@@ -98,6 +98,7 @@ public class ConfigDataEnvironmentPostProcessor implements EnvironmentPostProces
 			Collection<String> additionalProfiles) {
 		try {
 			this.logger.trace("Post-processing environment to add config data");
+			//资源加载器
 			resourceLoader = (resourceLoader != null) ? resourceLoader : new DefaultResourceLoader();
 			getConfigDataEnvironment(environment, resourceLoader, additionalProfiles).processAndApply();
 		}

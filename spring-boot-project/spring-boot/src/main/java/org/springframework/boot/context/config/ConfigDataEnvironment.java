@@ -145,11 +145,34 @@ class ConfigDataEnvironment {
 				.orElse(ConfigDataNotFoundAction.FAIL);
 		this.bootstrapContext = bootstrapContext;
 		this.environment = environment;
+		//创建配置数据解析器
+		//ConfigDataLocationResolver 列表
+		// 实现类 ConfigTreeConfigDataLocationResolver（ConfigTreeConfigDataResource）
+		// 和 StandardConfigDataLocationResolver（StandardConfigDataResource）
+		// 解析ConfigDataResource
 		this.resolvers = createConfigDataLocationResolvers(logFactory, bootstrapContext, binder, resourceLoader);
+		//其他配置文件
 		this.additionalProfiles = additionalProfiles;
+		//环境更新监听器
 		this.environmentUpdateListener = (environmentUpdateListener != null) ? environmentUpdateListener
 				: ConfigDataEnvironmentUpdateListener.NONE;
+		//配置数据加载器列表
+		//ConfigDataLoader  根据给定的ConfigDataResource解析出ConfigData
+		//配置加载器列表 ConfigTreeConfigDataLoader(ConfigTreeConfigDataResource) 和
+		//StandardConfigDataLoader(StandardConfigDataResource)
 		this.loaders = new ConfigDataLoaders(logFactory, bootstrapContext, resourceLoader.getClassLoader());
+		/**
+		 * ConfigDataEnvironmentContributors是SpringBoot中用于管理配置数据环境贡献者的组件。
+		 * 它的主要作用是维护一组贡献者，这些贡献者负责提供配置数据的加载、处理和管理。
+		 * 同样也是SpringBoot 2.4.0之后引入。
+		 * 它从特定的源或根据特定规则加载并解析配置数据，
+		 * 然后将解析后的结果（通常是以PropertySource形式）添加到ConfigDataEnvironment对象中。
+		 * 并且负责按照预定义的顺序和优先级策略来加载和合并不同来源的配置信息，确保正确地覆盖和合并属性值。
+		 * 不同的ConfigDataEnvironmentContributor可以响应不同的环境变量、系统属性或激活的profile，
+		 * 从而动态地调整加载哪些配置数据。
+		 */
+		//配置文件激活之前的阶段
+		//ConfigDataEnvironmentContributor向环境提供配置数据
 		this.contributors = createContributors(binder);
 	}
 
@@ -160,11 +183,17 @@ class ConfigDataEnvironment {
 
 	private ConfigDataEnvironmentContributors createContributors(Binder binder) {
 		this.logger.trace("Building config data environment contributors");
+		//获取环境中的属性源
 		MutablePropertySources propertySources = this.environment.getPropertySources();
+		/**
+		 * ConfigDataEnvironmentContributor 可以直接或间接向 Environment提供配置数据的单个元素。
+		 * 有几个不同的 kinds 贡献者，都是不可变的，并且在处理导入时将被替换为新版本。
+		 */
 		List<ConfigDataEnvironmentContributor> contributors = new ArrayList<>(propertySources.size() + 10);
 		PropertySource<?> defaultPropertySource = null;
 		for (PropertySource<?> propertySource : propertySources) {
 			if (DefaultPropertiesPropertySource.hasMatchingName(propertySource)) {
+				//设置默认的propertySource
 				defaultPropertySource = propertySource;
 			}
 			else {
@@ -195,6 +224,9 @@ class ConfigDataEnvironment {
 		addInitialImportContributors(initialContributors, bindLocations(binder, IMPORT_PROPERTY, EMPTY_LOCATIONS));
 		addInitialImportContributors(initialContributors,
 				bindLocations(binder, ADDITIONAL_LOCATION_PROPERTY, EMPTY_LOCATIONS));
+		//增加了两个 ConfigDataEnvironmentContributor
+		//"optional:file:./;optional:file:./config/;optional:file:./config/*/"
+		//"optional:classpath:/;optional:classpath:/config/"
 		addInitialImportContributors(initialContributors,
 				bindLocations(binder, LOCATION_PROPERTY, DEFAULT_SEARCH_LOCATIONS));
 		return initialContributors;
@@ -234,9 +266,16 @@ class ConfigDataEnvironment {
 				importer.getOptionalLocations());
 	}
 
+	/**
+	 * 在没有激活上下文的情况下处理初始配置数据环境参与者
+	 * @param contributors
+	 * @param importer
+	 * @return {@link ConfigDataEnvironmentContributors}
+	 */
 	private ConfigDataEnvironmentContributors processInitial(ConfigDataEnvironmentContributors contributors,
 			ConfigDataImporter importer) {
 		this.logger.trace("Processing initial config data environment contributors without activation context");
+		//配置文件激活之前的阶段  activationContext = null
 		contributors = contributors.withProcessedImports(importer, null);
 		registerBootstrapBinder(contributors, null, DENY_INACTIVE_BINDING);
 		return contributors;
@@ -326,6 +365,7 @@ class ConfigDataEnvironment {
 		checkMandatoryLocations(contributors, activationContext, loadedLocations, optionalLocations);
 		MutablePropertySources propertySources = this.environment.getPropertySources();
 		applyContributor(contributors, activationContext, propertySources);
+		//将默认的PropertySource放到最后
 		DefaultPropertiesPropertySource.moveToEnd(propertySources);
 		Profiles profiles = activationContext.getProfiles();
 		this.logger.trace(LogMessage.format("Setting default profiles: %s", profiles.getDefault()));

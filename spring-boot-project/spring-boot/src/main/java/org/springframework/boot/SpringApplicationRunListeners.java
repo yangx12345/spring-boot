@@ -116,6 +116,7 @@ class SpringApplicationRunListeners {
 
 	private void doWithListeners(String stepName, Consumer<SpringApplicationRunListener> listenerAction,
 			Consumer<StartupStep> stepAction) {
+		//返回一个默认启动阶段（DefaultApplicationStartup$DefaultStartupStep）实例
 		StartupStep step = this.applicationStartup.start(stepName);
 		this.listeners.forEach(listenerAction);
 		if (stepAction != null) {

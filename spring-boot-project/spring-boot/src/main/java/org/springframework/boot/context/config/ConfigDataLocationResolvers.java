@@ -77,6 +77,7 @@ class ConfigDataLocationResolvers {
 					availableParameters.add(BootstrapContext.class, bootstrapContext);
 					availableParameters.add(BootstrapRegistry.class, bootstrapContext);
 				});
+		//对ConfigDataLocationResolver实现重排序
 		this.resolvers = reorder(instantiator.instantiate(resourceLoader.getClassLoader(), names));
 	}
 

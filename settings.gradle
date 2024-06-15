@@ -1,13 +1,30 @@
 pluginManagement {
 	repositories {
+		//加上阿里云镜像
+		maven { url 'https://maven.aliyun.com/repository/public' }
 		mavenCentral()
 		gradlePluginPortal()
 		maven {
-			url 'https://repo.spring.io/release'
+			url "https://maven.aliyun.com/repository/releases"
 		}
 		if (version.endsWith('-SNAPSHOT')) {
-			maven { url "https://repo.spring.io/snapshot" }
+			maven { url "https://maven.aliyun.com/repository/snapshots" }
 		}
+		//maven私服。此处设置为ali的旧库，地址是url
+		maven{ url "https://maven.aliyun.com/nexus/content/groups/public" }
+		//阿里云新库
+		maven { url "https://maven.aliyun.com/repository/central" }
+		maven { url "https://maven.aliyun.com/repository/google" }
+		maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
+		maven { url "https://maven.aliyun.com/repository/jcenter" }
+		maven { url "https://maven.aliyun.com/repository/spring" }
+		maven { url "https://maven.aliyun.com/repository/spring-plugin" }
+		maven { url "https://maven.aliyun.com/repository/public" }
+		maven { url "https://maven.aliyun.com/repository/releases" }
+		maven { url "https://maven.aliyun.com/repository/snapshots" }
+		maven { url "https://maven.aliyun.com/repository/grails-core" }
+		maven { url "https://maven.aliyun.com/repository/mapr-public" }
+		maven { url "https://maven.aliyun.com/repository/apache-snapshots" }
 	}
 	resolutionStrategy {
 		eachPlugin {
@@ -23,7 +40,7 @@ pluginManagement {
 
 plugins {
 	id "com.gradle.enterprise" version "3.8.1"
-	id "io.spring.ge.conventions" version "0.0.9"
+//	id "io.spring.ge.conventions" version "0.0.9"
 }
 
 rootProject.name="spring-boot-build"
